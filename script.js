@@ -21,6 +21,8 @@ class Input {
   getName() {
     return `${this.input.id.charAt(0).toUpperCase()}${this.input.id.slice(1)}`;
   }
+
+  // FORM INPUT STATE TRANSITIONS
   error() {
     this.state = state.ERROR;
     this.input.classList.remove("success");
@@ -35,6 +37,8 @@ class Input {
     this.inputError.classList.remove("error");
     this.input.classList.add("success");
   }
+
+  // FORM INPUT STATE RESET
   reset() {
     this.state = state.NORMAL;
     this.errorList = [];
@@ -42,6 +46,17 @@ class Input {
     this.inputError.classList.remove("success");
     return this;
   }
+
+  // FORM INPUT VALUE UPDATE BASED ON STATE
+  update() {
+    if (this.state == state.ERROR) {
+      this.error();
+    } else {
+      this.success();
+    }
+  }
+  // VALIDATIONS
+
   checkNotEmpty() {
     if (this.getValue().trim() === "") {
       this.state = state.ERROR;
@@ -49,6 +64,7 @@ class Input {
     }
     return this;
   }
+
   checkMinMax(min, max) {
     if (this.getValue().trim().length < min) {
       this.state = state.ERROR;
@@ -78,14 +94,6 @@ class Input {
       this.errorList.push(`${this.getName()} not valid email`);
     }
     return this;
-  }
-
-  update() {
-    if (this.state == state.ERROR) {
-      this.error();
-    } else {
-      this.success();
-    }
   }
 }
 var username = new Input("username");
